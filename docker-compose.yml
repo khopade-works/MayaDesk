@@ -1,0 +1,59 @@
+# ==============================================================================
+# MayaDesk — local development compose file
+#
+# NOTE ON DATA DURABILITY: the dev-default DATABASE_URL uses SQLite, which is
+# a single file on the container's writable layer. On ephemeral hosts
+# (container restarts, redeploys, most PaaS platforms) that file is lost.
+# For any real deploy, uncomment the `postgres` service below and point
+# DATABASE_URL at it — SQLAlchemy async makes this a one-line env var change,
+# no code changes required.
+# ==============================================================================
+
+services:
+  api:
+    # TODO: add apps/api/Dockerfile; using an official base image + command
+    # override in the meantime so this file is runnable before that lands.
+    image: python:3.11-slim
+    working_dir: /app
+    command: >
+      bash -c "pip install -e packages/domain -e apps/api &&
+               uvicorn maya_api.main:app --host 0.0.0.0 --port 8000 --reload"
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+
+  web:
+    # TODO: add apps/web/Dockerfile; using an official base image + command
+    # override in the meantime so this file is runnable before that lands.
+    image: node:20-slim
+    working_dir: /app/apps/web
+    command: bash -c "npm install && npm run dev"
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./apps/web:/app/apps/web
+    depends_on:
+      - api
+
+  # postgres:
+  #   # Uncomment for a durable local/production database. After enabling,
+  #   # set DATABASE_URL=postgresql+asyncpg://maya:maya@postgres:5432/maya
+  #   # in your .env (replacing the sqlite+aiosqlite default) and run
+  #   # `make migrate`.
+  #   image: postgres:16-alpine
+  #   environment:
+  #     POSTGRES_USER: maya
+  #     POSTGRES_PASSWORD: maya
+  #     POSTGRES_DB: maya
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+# volumes:
+#   postgres_data:

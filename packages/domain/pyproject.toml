@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "maya-domain"
+version = "0.1.0"
+description = "MayaDesk shared domain package: settings, logging, errors, and async database wiring."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Proprietary" }
+authors = [{ name = "MayaDesk" }]
+dependencies = [
+    "pydantic[email]>=2.7",
+    "pydantic-settings>=2.3",
+    "sqlalchemy>=2.0",
+    "aiosqlite>=0.20",
+    "alembic>=1.13",
+    "structlog>=24.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "greenlet>=3.0",
+]
+test = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["maya_domain"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "maya_domain",
+    "alembic.ini",
+    "migrations",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

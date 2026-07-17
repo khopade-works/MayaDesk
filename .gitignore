@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Databases (never commit local data)
+*.db
+*.db-wal
+*.db-shm
+*.sqlite3
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+dist/
+.turbo/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Local agent/editor settings (not shared)
+.claude/settings.local.json
+
+# OMC operational state
+.omc/

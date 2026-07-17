@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "maya-api"
+version = "0.1.0"
+description = "MayaDesk HTTP API (FastAPI) exposing health and service endpoints."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Proprietary" }
+authors = [{ name = "MayaDesk" }]
+dependencies = [
+    "fastapi>=0.111",
+    "uvicorn[standard]>=0.30",
+    "livekit-api>=0.8",
+    "slowapi>=0.1.9",
+    "maya-domain",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["maya_api"]
+
+# Resolve the sibling domain package from source during local development.
+[tool.uv.sources]
+maya-domain = { path = "../../packages/domain", editable = true }
