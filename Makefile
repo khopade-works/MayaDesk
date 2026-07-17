@@ -7,7 +7,7 @@ PYTHON ?= python
 PIP    ?= $(PYTHON) -m pip
 NPM    ?= npm
 
-.PHONY: help install migrate revision dev-api dev-web dev-agent seed test lint format clean
+.PHONY: help install migrate revision dev-api dev-web dev-agent dev-agent-console seed test lint format clean
 
 help: ## Show this help
 	@echo "MayaDesk — available targets:"
@@ -29,8 +29,11 @@ dev-api: ## Run the FastAPI app with auto-reload on :8000
 dev-web: ## Run the Next.js dev server on :3000
 	cd apps/web && $(NPM) run dev
 
-dev-agent: ## Run the LiveKit worker (Phase 3, skeleton only)
-	$(PYTHON) -m maya_agent.worker
+dev-agent: ## Run Maya's LiveKit worker (connects to LiveKit, hot-reload)
+	$(PYTHON) -m maya_agent.worker dev
+
+dev-agent-console: ## Talk to Maya directly in the terminal (no browser/LiveKit room)
+	$(PYTHON) -m maya_agent.worker console
 
 seed: ## Seed the database with sample data
 	$(PYTHON) -m maya_domain.seed
